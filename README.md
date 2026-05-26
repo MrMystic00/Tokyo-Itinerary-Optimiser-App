@@ -138,11 +138,16 @@ Included:
 
 # 🖥️ How to Run the Application
 
-🔧 Backend 
-In the terminal:
-``` text
-cd "Website Implementation Code/backend"
-pip install -r requirements.txt
+👨‍💻 1. Run frontend in the terminal:
+``` text 
+cd "Website Implementation Code/frontend"
+start index.html
+```
 
-About
-An optimization-based Tokyo itinerary planner that uses Gurobi to recommend attractions and generate efficient travel routes. Integrates Google Maps attraction data from Apify and Tokyo metro datasets from Kaggle, with clustering and geospatial visualization using Python, Pandas, NumPy, Geopy, and Folium.git 
+🔧 2. Run backend in the terminal:
+``` text
+cd ..
+cd "backend"
+pip install -r requirements.txt
+python app.py
+```
