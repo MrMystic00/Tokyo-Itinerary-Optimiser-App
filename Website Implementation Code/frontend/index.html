@@ -1,0 +1,963 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Attraction Optimizer</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Old+Mincho:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+      body {
+        font-family: "Noto Sans JP", system-ui, sans-serif;
+      }
+      h2, h3, h4 {
+        font-family: "Zen Old Mincho", serif;
+        letter-spacing: 0.2px;
+      }
+      .site-bg {
+        background-image: linear-gradient(rgba(255, 245, 250, 0.84), rgba(255, 240, 245, 0.84)), url("../372657.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+      .site-bg::before,
+      .site-bg::after {
+        content: "";
+        position: fixed;
+        width: 180px;
+        height: 180px;
+        pointer-events: none;
+        opacity: 0.3;
+        z-index: 0;
+        background:
+          radial-gradient(circle at 20% 20%, rgba(236, 72, 153, 0.22) 0 6px, transparent 7px),
+          radial-gradient(circle at 60% 40%, rgba(219, 39, 119, 0.2) 0 5px, transparent 6px),
+          radial-gradient(circle at 40% 75%, rgba(244, 114, 182, 0.2) 0 7px, transparent 8px);
+      }
+      .site-bg::before { top: 12px; left: 12px; }
+      .site-bg::after { bottom: 12px; right: 12px; }
+      .panel {
+        border: 1px solid #f3c8da;
+        background: linear-gradient(180deg, #fff9fc 0%, #fff2f7 100%);
+        box-shadow: 0 10px 24px rgba(168, 38, 92, 0.1);
+      }
+      .soft-input {
+        border: 1px solid #efbfd2;
+        background: #fff;
+      }
+      .soft-input:focus {
+        outline: none;
+        border-color: #db5b8f;
+        box-shadow: 0 0 0 3px rgba(219, 91, 143, 0.2);
+      }
+      .section-box {
+        border: 1px solid #f1ccda;
+        background: #fff4f8;
+      }
+      .map-day-control {
+        background: linear-gradient(180deg, #fffafc 0%, #ffeef5 100%);
+        border: 1px solid #f1bfd4;
+        border-radius: 10px;
+        box-shadow: 0 8px 18px rgba(190, 24, 93, 0.18);
+        color: #881337;
+      }
+      .map-day-btn {
+        width: 100%;
+        padding: 5px 8px;
+        border: 1px solid #f3aac8;
+        border-radius: 8px;
+        background: #f43f8f;
+        color: #fff;
+        font-weight: 600;
+      }
+      .map-day-btn:hover {
+        background: #e11d74;
+      }
+    </style>
+  </head>
+
+  <body class="site-bg text-slate-800 h-screen overflow-hidden">
+    <div class="max-w-7xl mx-auto p-3 h-full w-full flex flex-col relative z-10">
+      <div class="grid md:grid-cols-4 gap-3 flex-1 min-h-0">
+        <aside class="panel rounded-xl p-2 space-y-2 min-h-0 overflow-hidden flex flex-col">
+          <h2 class="text-xl font-semibold text-rose-900">Your Japan Planner</h2>
+
+          <form id="optimizationForm" class="space-y-2 min-h-0 flex-1 text-sm overflow-auto pr-1" onsubmit="return false;">
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-sm font-medium mb-1">Start Latitude</label>
+                <input id="start_lat" type="number" step="0.000001" value="35.6762" required class="soft-input w-full rounded px-2 py-1.5" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-1">Start Longitude</label>
+                <input id="start_lon" type="number" step="0.000001" value="139.6503" required class="soft-input w-full rounded px-2 py-1.5" />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-1">Number of Attractions</label>
+              <input id="n_select" type="number" min="1" max="64" value="9" class="soft-input w-full rounded px-2 py-1.5" />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-1">Max Attractions Per Day</label>
+              <input id="num_days" type="number" min="1" max="30" value="1" class="soft-input w-full rounded px-2 py-1.5" />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-1">Budget or Preference</label>
+              <select id="objective_mode" class="soft-input w-full rounded px-2 py-1.5 mb-1.5">
+                <option value="budget">Budget</option>
+                <option value="preference">Preference</option>
+              </select>
+              <input id="budget" type="number" min="0" step="100" value="10000" class="soft-input w-full rounded px-2 py-1.5" />
+              <select id="preference_symbol" class="soft-input w-full rounded px-2 py-1.5 mt-1.5 hidden">
+                <option value="$$$">$$$ (Premium Experience)</option>
+                <option value="$$">$$ (Balanced Experience)</option>
+                <option value="$">$ (Budget-friendly)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-1">Attractions You Want to Visit</label>
+              <select id="requiredAttractions" multiple size="5" class="soft-input w-full rounded px-2 py-1 text-sm"></select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-1">Attractions You Do Not Want to Visit</label>
+              <select id="forbiddenAttractions" multiple size="5" class="soft-input w-full rounded px-2 py-1 text-sm"></select>
+            </div>
+
+            <div class="section-box rounded p-2 space-y-1.5">
+              <label class="block text-sm font-medium">Category Constraint</label>
+              <div class="grid grid-cols-3 gap-2">
+                <select id="categoryOp" class="soft-input rounded px-2 py-1.5 text-sm">
+                  <option value="exact">Exact</option>
+                  <option value="max">At Most</option>
+                  <option value="min">At Least</option>
+                </select>
+                <select id="categoryName" class="soft-input rounded px-2 py-1.5 text-sm"></select>
+                <input id="categoryValue" type="number" min="0" value="1" class="soft-input rounded px-2 py-1.5 text-sm" />
+              </div>
+              <button type="button" id="addCategoryRule" class="px-3 py-1.5 bg-rose-600 text-white rounded text-xs hover:bg-rose-700">Add Category Rule</button>
+              <div id="categoryRules" class="space-y-1 max-h-16 overflow-auto"></div>
+            </div>
+
+            <div class="section-box rounded p-2 space-y-1.5">
+              <label class="block text-sm font-medium">City Constraint</label>
+              <div class="grid grid-cols-3 gap-2">
+                <select id="cityOp" class="soft-input rounded px-2 py-1.5 text-sm">
+                  <option value="exact">Exact</option>
+                  <option value="max">At Most</option>
+                  <option value="min">At Least</option>
+                </select>
+                <select id="cityName" class="soft-input rounded px-2 py-1.5 text-sm"></select>
+                <input id="cityValue" type="number" min="0" value="1" class="soft-input rounded px-2 py-1.5 text-sm" />
+              </div>
+              <button type="button" id="addCityRule" class="px-3 py-1.5 bg-rose-600 text-white rounded text-xs hover:bg-rose-700">Add City Rule</button>
+              <div id="cityRules" class="space-y-1 max-h-16 overflow-auto"></div>
+            </div>
+
+          </form>
+
+          <div class="grid grid-cols-2 gap-2 pt-2 shrink-0 bg-white">
+            <button type="button" id="resetBtn" class="w-full py-2 px-3 bg-slate-200 text-slate-800 rounded-lg hover:bg-slate-300 text-sm">
+              Reset All
+            </button>
+            <button type="button" id="optimizeBtn" class="w-full py-2 px-3 bg-rose-600 text-white rounded-lg hover:bg-rose-700 text-sm shadow">
+              Run Optimization
+            </button>
+          </div>
+
+        </aside>
+
+        <div id="map" class="md:col-span-2 rounded-xl border border-rose-200 bg-white h-full min-h-0 shadow"></div>
+
+        <aside class="panel rounded-xl p-3 min-h-0 overflow-hidden flex flex-col">
+          <h3 class="text-sm font-semibold mb-2 text-rose-900">Day Itinerary</h3>
+          <div id="itinerary_summary_title" class="text-xs text-slate-600 mb-2 shrink-0">No day selected</div>
+          <div id="itinerary_summary" class="text-xs leading-6 space-y-1 overflow-auto min-h-0 flex-1">
+            <div class="text-slate-500">Run optimization to see itinerary summary.</div>
+          </div>
+          <div class="mt-2 pt-2 border-t border-rose-100 shrink-0">
+            <h4 class="text-xs font-semibold text-rose-900 mb-1">Quick Summary</h4>
+            <div id="quick_summary" class="text-xs text-slate-700 max-h-40 overflow-auto">
+              <div class="text-slate-500">No summary yet.</div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <script>
+      const map = L.map("map").setView([35.6762, 139.6503], 12);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: "&copy; OpenStreetMap contributors",
+      }).addTo(map);
+
+      const markerLayer = L.layerGroup().addTo(map);
+      const routeLayer = L.layerGroup().addTo(map);
+      let currentTransportPlan = null;
+      let currentDayKeys = [];
+      let currentDayIndex = 0;
+      let currentSelectedAttractions = [];
+
+      const dayControl = L.control({ position: "topright" });
+      dayControl.onAdd = function () {
+        const container = L.DomUtil.create("div", "leaflet-bar");
+        container.classList.add("map-day-control");
+        container.style.padding = "6px";
+        container.style.minWidth = "140px";
+        container.style.fontSize = "12px";
+        container.innerHTML = `
+          <div id="map_day_label" style="margin-bottom:6px;font-weight:700;">Day: -</div>
+          <button id="map_day_toggle_btn" class="map-day-btn">Toggle Day</button>
+        `;
+        L.DomEvent.disableClickPropagation(container);
+        return container;
+      };
+      dayControl.addTo(map);
+
+      let allAttractions = [];
+      let allCategories = [];
+      let allCities = [];
+      const categoryRules = [];
+      const cityRules = [];
+
+      function getSelectedValues(selectId) {
+        const select = document.getElementById(selectId);
+        return Array.from(select.selectedOptions).map(o => o.value);
+      }
+
+      function enableSingleClickToggle(selectId) {
+        const el = document.getElementById(selectId);
+        el.addEventListener("mousedown", (e) => {
+          if (e.target && e.target.tagName === "OPTION") {
+            e.preventDefault();
+            e.target.selected = !e.target.selected;
+            el.dispatchEvent(new Event("change"));
+          }
+        });
+      }
+
+      function comparatorToType(domain, op) {
+        if (domain === "category") {
+          if (op === "min") return "category_min";
+          if (op === "max") return "category_max";
+          return "category_exact";
+        }
+        if (op === "min") return "city_min";
+        if (op === "max") return "city_max";
+        return "city_exact";
+      }
+
+      function renderRules() {
+        const categoryRulesEl = document.getElementById("categoryRules");
+        categoryRulesEl.innerHTML = "";
+        categoryRules.forEach((rule, idx) => {
+          const row = document.createElement("div");
+          row.className = "flex items-center justify-between text-xs border rounded px-2 py-1 bg-white";
+          row.innerHTML = `<span>${rule.type} | ${rule.category} | ${rule.value}</span><button data-idx="${idx}" class="text-red-600">Remove</button>`;
+          row.querySelector("button").addEventListener("click", () => {
+            categoryRules.splice(idx, 1);
+            renderRules();
+            updateRequestPreview();
+          });
+          categoryRulesEl.appendChild(row);
+        });
+
+        const cityRulesEl = document.getElementById("cityRules");
+        cityRulesEl.innerHTML = "";
+        cityRules.forEach((rule, idx) => {
+          const row = document.createElement("div");
+          row.className = "flex items-center justify-between text-xs border rounded px-2 py-1 bg-white";
+          row.innerHTML = `<span>${rule.type} | ${rule.city} | ${rule.value}</span><button data-idx="${idx}" class="text-red-600">Remove</button>`;
+          row.querySelector("button").addEventListener("click", () => {
+            cityRules.splice(idx, 1);
+            renderRules();
+            updateRequestPreview();
+          });
+          cityRulesEl.appendChild(row);
+        });
+      }
+
+      function buildConstraints() {
+        const nSelect = Number(document.getElementById("n_select").value || 9);
+        const budget = Number(document.getElementById("budget").value || 10000);
+        const objectiveMode = document.getElementById("objective_mode").value;
+
+        const constraints = [{ type: "exact_n", value: nSelect }];
+        if (objectiveMode === "budget") {
+          constraints.push({ type: "budget", value: budget });
+        }
+
+        const required = getSelectedValues("requiredAttractions");
+        if (required.length > 0) {
+          constraints.push({ type: "attraction_required", attractions: required });
+        }
+
+        const forbidden = getSelectedValues("forbiddenAttractions");
+        if (forbidden.length > 0) {
+          constraints.push({ type: "attraction_forbidden", attractions: forbidden });
+        }
+
+        categoryRules.forEach(r => constraints.push(r));
+        cityRules.forEach(r => constraints.push(r));
+
+        return constraints;
+      }
+
+      function updateRequestPreview() {
+        const objectiveMode = document.getElementById("objective_mode").value;
+        const symbol = document.getElementById("preference_symbol").value;
+        const startLat = Number(document.getElementById("start_lat").value);
+        const startLon = Number(document.getElementById("start_lon").value);
+        const budget = Number(document.getElementById("budget").value || 10000);
+        const nSelect = Number(document.getElementById("n_select").value || 9);
+        const numDays = Number(document.getElementById("num_days").value || 1);
+        const constraints = buildConstraints();
+        const preferenceMap = {
+          "$$$": "Premium Experience",
+          "$$": "Balanced Experience",
+          "$": "Budget-friendly",
+        };
+
+        const isWeighted = objectiveMode === "preference";
+        const requestBody = {
+          start_lat: startLat,
+          start_lon: startLon,
+          num_days: numDays,
+          budget: isWeighted ? null : budget,
+          n_select: nSelect,
+          model_type: isWeighted ? "weighted" : "normal",
+          preference: isWeighted ? preferenceMap[symbol] : "Premium Experience",
+          category_filter: "",
+          constraints
+        };
+        // JSON preview removed intentionally to maximize layout space.
+      }
+
+      function updateObjectiveModeUI() {
+        const mode = document.getElementById("objective_mode").value;
+        const budgetEl = document.getElementById("budget");
+        const prefEl = document.getElementById("preference_symbol");
+        if (mode === "budget") {
+          budgetEl.classList.remove("hidden");
+          prefEl.classList.add("hidden");
+        } else {
+          budgetEl.classList.add("hidden");
+          prefEl.classList.remove("hidden");
+        }
+      }
+
+      function normalizeKey(v) {
+        return String(v || "").trim().toLowerCase();
+      }
+
+      function enforceNumericInputs() {
+        const integerIds = ["n_select", "num_days", "budget", "categoryValue", "cityValue"];
+        const decimalIds = ["start_lat", "start_lon"];
+
+        integerIds.forEach((id) => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          el.addEventListener("keydown", (e) => {
+            const allowed = ["Backspace", "Delete", "Tab", "ArrowLeft", "ArrowRight", "Home", "End", "Enter"];
+            if (allowed.includes(e.key)) return;
+            if (!/^[0-9]$/.test(e.key)) e.preventDefault();
+          });
+          el.addEventListener("paste", (e) => {
+            const text = (e.clipboardData || window.clipboardData).getData("text");
+            if (!/^\d+$/.test(text.trim())) e.preventDefault();
+          });
+        });
+
+        decimalIds.forEach((id) => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          el.addEventListener("keydown", (e) => {
+            const allowed = ["Backspace", "Delete", "Tab", "ArrowLeft", "ArrowRight", "Home", "End", "Enter", ".", "-"];
+            if (allowed.includes(e.key)) return;
+            if (!/^[0-9]$/.test(e.key)) e.preventDefault();
+          });
+        });
+      }
+
+      function collectBoundConflicts(rules, keyField, label, nSelect) {
+        const grouped = new Map();
+
+        rules.forEach(rule => {
+          const key = normalizeKey(rule[keyField]);
+          if (!key) return;
+          if (!grouped.has(key)) {
+            grouped.set(key, {
+              name: String(rule[keyField]),
+              lower: 0,
+              upper: Number.POSITIVE_INFINITY
+            });
+          }
+
+          const info = grouped.get(key);
+          const value = Number(rule.value || 0);
+
+          if (rule.type.endsWith("_min")) {
+            info.lower = Math.max(info.lower, value);
+          } else if (rule.type.endsWith("_max")) {
+            info.upper = Math.min(info.upper, value);
+          } else if (rule.type.endsWith("_exact")) {
+            info.lower = Math.max(info.lower, value);
+            info.upper = Math.min(info.upper, value);
+          }
+        });
+
+        const conflicts = [];
+        grouped.forEach(info => {
+          if (info.lower > info.upper) {
+            conflicts.push(
+              `${label} mismatch for "${info.name}": lower bound ${info.lower} is greater than upper bound ${info.upper}`
+            );
+          }
+          if (Number.isFinite(info.upper) && info.upper > nSelect) {
+            conflicts.push(
+              `${label} upper bound for "${info.name}" is greater than n (${nSelect})`
+            );
+          }
+        });
+
+        return conflicts;
+      }
+
+      function validateInputs() {
+        const nSelect = Number(document.getElementById("n_select").value || 9);
+        const numDays = Number(document.getElementById("num_days").value || 1);
+        const budget = Number(document.getElementById("budget").value || 0);
+        const startLat = Number(document.getElementById("start_lat").value);
+        const startLon = Number(document.getElementById("start_lon").value);
+        const required = getSelectedValues("requiredAttractions");
+        const forbidden = getSelectedValues("forbiddenAttractions");
+
+        const errors = [];
+
+        if (!Number.isFinite(startLat) || !Number.isFinite(startLon)) {
+          errors.push("Starting coordinates must be valid numbers.");
+        }
+        if (!Number.isInteger(nSelect) || nSelect < 1) {
+          errors.push("Number of attractions must be a whole number greater than or equal to 1.");
+        }
+        if (!Number.isInteger(numDays) || numDays < 1) {
+          errors.push("Max attractions per day must be a whole number greater than or equal to 1.");
+        }
+        if (!Number.isFinite(budget) || budget < 0) {
+          errors.push("Budget must be a valid number greater than or equal to 0.");
+        }
+        categoryRules.forEach((rule) => {
+          const value = Number(rule.value);
+          if (!Number.isInteger(value) || value < 0) {
+            errors.push(`Category rule for "${rule.category}" must use a whole number >= 0.`);
+          }
+        });
+        cityRules.forEach((rule) => {
+          const value = Number(rule.value);
+          if (!Number.isInteger(value) || value < 0) {
+            errors.push(`City rule for "${rule.city}" must use a whole number >= 0.`);
+          }
+        });
+
+        const forbiddenSet = new Set(forbidden.map(normalizeKey));
+        const overlap = required.filter(name => forbiddenSet.has(normalizeKey(name)));
+        if (overlap.length > 0) {
+          errors.push(
+            `Conflicting instructions for attractions (want vs forbidden): ${overlap.join(", ")}`
+          );
+        }
+
+        if (required.length > nSelect) {
+          errors.push("Attraction selected more than the number of attractions you want to visit");
+        }
+
+        errors.push(...collectBoundConflicts(categoryRules, "category", "Category", nSelect));
+        errors.push(...collectBoundConflicts(cityRules, "city", "City", nSelect));
+
+        return errors;
+      }
+
+      async function loadData() {
+        const [attractionsRes, categoriesRes] = await Promise.all([
+          fetch("http://localhost:5000/api/attractions"),
+          fetch("http://localhost:5000/api/categories")
+        ]);
+
+        allAttractions = await attractionsRes.json();
+        const categoriesPayload = await categoriesRes.json();
+        allCategories = Array.isArray(categoriesPayload.categories) ? categoriesPayload.categories : [];
+
+        allCities = Array.from(new Set(allAttractions.map(a => String(a.city || "").trim()).filter(Boolean))).sort();
+
+        const requiredEl = document.getElementById("requiredAttractions");
+        const forbiddenEl = document.getElementById("forbiddenAttractions");
+
+        allAttractions
+          .map(a => String(a.title || "").trim())
+          .filter(Boolean)
+          .sort((a, b) => a.localeCompare(b))
+          .forEach(title => {
+            const o1 = document.createElement("option");
+            o1.value = title;
+            o1.textContent = title;
+            requiredEl.appendChild(o1);
+
+            const o2 = document.createElement("option");
+            o2.value = title;
+            o2.textContent = title;
+            forbiddenEl.appendChild(o2);
+          });
+
+        const categoryEl = document.getElementById("categoryName");
+        allCategories.forEach(c => {
+          const o = document.createElement("option");
+          o.value = c;
+          o.textContent = c;
+          categoryEl.appendChild(o);
+        });
+
+        const cityEl = document.getElementById("cityName");
+        allCities.forEach(c => {
+          const o = document.createElement("option");
+          o.value = c;
+          o.textContent = c;
+          cityEl.appendChild(o);
+        });
+
+        enableSingleClickToggle("requiredAttractions");
+        enableSingleClickToggle("forbiddenAttractions");
+
+        updateRequestPreview();
+      }
+
+      async function drawOptimizedRoute(selected) {
+        if (selected.length <= 1) return;
+        const locations = selected.map(a => ({ lat: a.latitude, lon: a.longitude }));
+
+        const routeRes = await fetch("http://localhost:5000/api/optimize-route", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ locations })
+        });
+
+        if (!routeRes.ok) return;
+        const routeData = await routeRes.json();
+
+        let prev = null;
+        routeData.optimized.forEach((pt, idx) => {
+          L.circleMarker([pt.lat, pt.lon], { radius: 7, color: "red" })
+            .bindPopup(`Stop ${idx + 1}`)
+            .addTo(routeLayer);
+          if (prev) {
+            L.polyline([prev, [pt.lat, pt.lon]], { color: "red", weight: 3 }).addTo(routeLayer);
+          }
+          prev = [pt.lat, pt.lon];
+        });
+      }
+
+      function renderDayOnMap(dayKey) {
+        if (!currentTransportPlan || !currentTransportPlan[dayKey]) return;
+        markerLayer.clearLayers();
+        routeLayer.clearLayers();
+
+        const points = currentTransportPlan[dayKey];
+        const spread = spreadClosePoints(points);
+        const attractionOrder = new Map();
+        let attractionCounter = 0;
+        points.forEach((p) => {
+          const isAttraction = p.type === "location" && String(p.name || "").toUpperCase() !== "START";
+          if (isAttraction && !attractionOrder.has(p.seq)) {
+            attractionCounter += 1;
+            attractionOrder.set(p.seq, attractionCounter);
+          }
+        });
+        let prev = null;
+        spread.forEach((entry) => {
+          const p = entry.point;
+          const latlng = [entry.lat, entry.lon];
+          const isStation = p.type === "station";
+          const isStart = String(p.name || "").toUpperCase() === "START";
+          const isAttraction = p.type === "location" && !isStart;
+          const attractionNo = attractionOrder.get(p.seq);
+          const marker = isStation
+            ? L.circleMarker(latlng, { radius: 5, color: "#7e5878", weight: 2, fillOpacity: 0.85 })
+            : (isStart
+              ? L.circleMarker(latlng, { radius: 8, color: "#dc2626", weight: 3, fillColor: "#ef4444", fillOpacity: 0.95 })
+              : L.marker(latlng, {
+                icon: L.divIcon({
+                  className: "custom-day-marker",
+                  html: `<div style="
+                    width:26px;height:26px;border-radius:9999px;
+                    background:#ec4899;
+                    color:white;display:flex;align-items:center;justify-content:center;
+                    font-size:11px;font-weight:700;border:2px solid white;
+                    box-shadow:0 2px 8px rgba(0,0,0,0.25);">${attractionNo}</div>`,
+                  iconSize: [26, 26],
+                  iconAnchor: [13, 13],
+                }),
+                zIndexOffset: 1000,
+              }));
+
+          if (isStation) {
+            marker.bindPopup(
+              `<strong>${p.seq}. ${p.name}</strong><br/>Type: ${p.type}<br/>Day: ${dayKey}`
+            );
+          } else if (isAttraction) {
+            const review = p.review_score == null ? "N/A" : Number(p.review_score).toFixed(2);
+            const city = p.city || "N/A";
+            const categories = p.all_categories || "N/A";
+            marker.bindPopup(`
+              <strong>${attractionNo}. ${p.name}</strong><br/>
+              City: ${city}<br/>
+              Review: ${review}<br/>
+              Categories: ${categories}<br/>
+              Day: ${dayKey}
+            `);
+          } else {
+            marker.bindPopup(
+              `<strong>${p.name}</strong><br/>Type: ${p.type}<br/>Day: ${dayKey}`
+            );
+          }
+          marker.addTo(markerLayer);
+
+          if (prev) {
+            L.polyline([prev, latlng], { color: "#dc2626", weight: 3, opacity: 0.8 }).addTo(routeLayer);
+          }
+          prev = latlng;
+        });
+
+        if (points.length > 0) {
+          const group = new L.featureGroup(markerLayer.getLayers());
+          map.fitBounds(group.getBounds().pad(0.1));
+        }
+        const mapDayLabel = document.getElementById("map_day_label");
+        if (mapDayLabel) {
+          mapDayLabel.textContent = formatDayLabel(dayKey);
+        }
+
+        renderDaySummary(dayKey);
+      }
+
+      function spreadClosePoints(points) {
+        const grouped = new Map();
+        const keyFor = (lat, lon) => `${Number(lat).toFixed(5)}|${Number(lon).toFixed(5)}`;
+
+        points.forEach((p) => {
+          const key = keyFor(p.lat, p.lon);
+          if (!grouped.has(key)) grouped.set(key, []);
+          grouped.get(key).push(p);
+        });
+
+        const out = [];
+        grouped.forEach((arr) => {
+          if (arr.length === 1) {
+            out.push({ point: arr[0], lat: Number(arr[0].lat), lon: Number(arr[0].lon) });
+            return;
+          }
+
+          const baseLat = Number(arr[0].lat);
+          const baseLon = Number(arr[0].lon);
+          const radius = 0.00035; // ~35-40m visual spread
+
+          arr.forEach((p, idx) => {
+            const angle = (2 * Math.PI * idx) / arr.length;
+            out.push({
+              point: p,
+              lat: baseLat + radius * Math.sin(angle),
+              lon: baseLon + radius * Math.cos(angle),
+            });
+          });
+        });
+
+        // preserve itinerary sequence order after spread
+        return out.sort((a, b) => Number(a.point.seq) - Number(b.point.seq));
+      }
+
+      function formatDayLabel(dayKey) {
+        const raw = String(dayKey || "").trim();
+        const match = raw.match(/(\d+)/);
+        if (match) return `Day:${match[1]}`;
+        return raw ? `Day:${raw}` : "Day:-";
+      }
+
+      function renderDaySummary(dayKey) {
+        const titleEl = document.getElementById("itinerary_summary_title");
+        const bodyEl = document.getElementById("itinerary_summary");
+
+        if (!currentTransportPlan || !currentTransportPlan[dayKey]) {
+          titleEl.textContent = "No day selected";
+          bodyEl.innerHTML = '<div class="text-slate-500">Run optimization to see itinerary summary.</div>';
+          return;
+        }
+
+        titleEl.textContent = formatDayLabel(dayKey);
+        const points = currentTransportPlan[dayKey];
+
+        if (!points.length) {
+          bodyEl.innerHTML = '<div class="text-slate-500">No itinerary points for this day.</div>';
+          return;
+        }
+
+        const lines = points.map((p) => {
+          const icon = p.type === "station" ? "🚉" : "📍";
+          return `<div><span class="font-semibold">${p.seq}.</span> ${icon} ${p.name}</div>`;
+        });
+
+        bodyEl.innerHTML = lines.join("");
+      }
+
+      function parseCategories(raw) {
+        if (Array.isArray(raw)) return raw.map(String);
+        const s = String(raw || "").trim();
+        if (!s) return [];
+        return s
+          .replace(/^\[/, "")
+          .replace(/\]$/, "")
+          .split(",")
+          .map(x => x.trim().replace(/^['"]|['"]$/g, ""))
+          .filter(Boolean);
+      }
+
+      function renderQuickSummary() {
+        const el = document.getElementById("quick_summary");
+        if (!currentSelectedAttractions || currentSelectedAttractions.length === 0) {
+          el.innerHTML = '<div class="text-slate-500">No summary yet.</div>';
+          return;
+        }
+
+        const dayCount = currentTransportPlan ? Object.keys(currentTransportPlan).length : 0;
+        const cityCounts = new Map();
+        const categoryCounts = new Map();
+        const totalCost = currentSelectedAttractions.reduce((sum, a) => sum + Number(a.prices || 0), 0);
+
+        currentSelectedAttractions.forEach((a) => {
+          const city = String(a.city || "Unknown");
+          cityCounts.set(city, (cityCounts.get(city) || 0) + 1);
+
+          parseCategories(a.all_categories).forEach((cat) => {
+            categoryCounts.set(cat, (categoryCounts.get(cat) || 0) + 1);
+          });
+        });
+
+        const cityLines = Array.from(cityCounts.entries())
+          .sort((a, b) => b[1] - a[1])
+          .map(([k, v]) => `<div>• ${k}: ${v}</div>`)
+          .join("");
+
+        const categoryLines = Array.from(categoryCounts.entries())
+          .sort((a, b) => b[1] - a[1])
+          .map(([k, v]) => `<div>• ${k}: ${v}</div>`)
+          .join("");
+
+        const attractionLines = currentSelectedAttractions
+          .map((a, i) => `<div>• ${i + 1}. ${String(a.title || "Untitled")}</div>`)
+          .join("");
+
+        el.innerHTML = `
+          <div><strong>Number of Days:</strong> ${dayCount || 1}</div>
+          <div><strong>Total Cost:</strong> ${totalCost.toFixed(0)} JPY</div>
+          <div class="mt-1"><strong>Attractions</strong></div>
+          ${attractionLines || '<div class="text-slate-500">No attractions selected.</div>'}
+          <div class="mt-1"><strong>Categories</strong></div>
+          ${categoryLines || '<div class="text-slate-500">No category data.</div>'}
+          <div class="mt-1"><strong>Cities</strong></div>
+          ${cityLines || '<div class="text-slate-500">No city data.</div>'}
+        `;
+      }
+
+      document.getElementById("addCategoryRule").addEventListener("click", () => {
+        const op = document.getElementById("categoryOp").value;
+        const category = document.getElementById("categoryName").value;
+        const value = Number(document.getElementById("categoryValue").value || 0);
+        if (!category) return;
+        if (!Number.isInteger(value) || value < 0) {
+          alert("Category value must be a whole number >= 0.");
+          return;
+        }
+        categoryRules.push({ type: comparatorToType("category", op), category, value });
+        renderRules();
+        updateRequestPreview();
+      });
+
+      document.getElementById("addCityRule").addEventListener("click", () => {
+        const op = document.getElementById("cityOp").value;
+        const city = document.getElementById("cityName").value;
+        const value = Number(document.getElementById("cityValue").value || 0);
+        if (!city) return;
+        if (!Number.isInteger(value) || value < 0) {
+          alert("City value must be a whole number >= 0.");
+          return;
+        }
+        cityRules.push({ type: comparatorToType("city", op), city, value });
+        renderRules();
+        updateRequestPreview();
+      });
+
+      ["start_lat", "start_lon", "n_select", "num_days", "budget", "objective_mode", "preference_symbol", "requiredAttractions", "forbiddenAttractions"].forEach(id => {
+        document.getElementById(id).addEventListener("input", updateRequestPreview);
+        document.getElementById(id).addEventListener("change", updateRequestPreview);
+      });
+
+      document.getElementById("objective_mode").addEventListener("change", () => {
+        updateObjectiveModeUI();
+        updateRequestPreview();
+      });
+
+      document.getElementById("resetBtn").addEventListener("click", () => {
+        document.getElementById("start_lat").value = 35.6762;
+        document.getElementById("start_lon").value = 139.6503;
+        document.getElementById("n_select").value = 9;
+        document.getElementById("num_days").value = 1;
+        document.getElementById("budget").value = 10000;
+        document.getElementById("objective_mode").value = "budget";
+        document.getElementById("preference_symbol").value = "$$$";
+
+        ["requiredAttractions", "forbiddenAttractions"].forEach(id => {
+          Array.from(document.getElementById(id).options).forEach(opt => {
+            opt.selected = false;
+          });
+        });
+
+        categoryRules.length = 0;
+        cityRules.length = 0;
+        renderRules();
+
+        markerLayer.clearLayers();
+        routeLayer.clearLayers();
+        currentTransportPlan = null;
+        currentDayKeys = [];
+        currentDayIndex = 0;
+        currentSelectedAttractions = [];
+        renderDaySummary("");
+        renderQuickSummary();
+        map.setView([35.6762, 139.6503], 12);
+
+        updateObjectiveModeUI();
+        updateRequestPreview();
+      });
+
+      document.addEventListener("click", (e) => {
+        if (e.target && e.target.id === "map_day_toggle_btn") {
+          if (!currentTransportPlan || currentDayKeys.length === 0) return;
+          currentDayIndex = (currentDayIndex + 1) % currentDayKeys.length;
+          const dayKey = currentDayKeys[currentDayIndex];
+          renderDayOnMap(dayKey);
+        }
+      });
+
+      document.getElementById("optimizeBtn").addEventListener("click", async () => {
+        try {
+          const validationErrors = validateInputs();
+          if (validationErrors.length > 0) {
+            alert(validationErrors.join("\n"));
+            return;
+          }
+
+          const budget = Number(document.getElementById("budget").value || 10000);
+          const nSelect = Number(document.getElementById("n_select").value || 9);
+          const numDays = Number(document.getElementById("num_days").value || 1);
+          const startLat = Number(document.getElementById("start_lat").value);
+          const startLon = Number(document.getElementById("start_lon").value);
+
+          if (!Number.isFinite(startLat) || !Number.isFinite(startLon)) {
+            alert("Please input valid starting coordinates (lat, lon).");
+            return;
+          }
+
+          const constraints = buildConstraints();
+          const objectiveMode = document.getElementById("objective_mode").value;
+          const symbol = document.getElementById("preference_symbol").value;
+          const preferenceMap = {
+            "$$$": "Premium Experience",
+            "$$": "Balanced Experience",
+            "$": "Budget-friendly",
+          };
+          const isWeighted = objectiveMode === "preference";
+
+          const requestBody = {
+            start_lat: startLat,
+            start_lon: startLon,
+            num_days: numDays,
+            budget: isWeighted ? null : budget,
+            n_select: nSelect,
+            model_type: isWeighted ? "weighted" : "normal",
+            preference: isWeighted ? preferenceMap[symbol] : "Premium Experience",
+            category_filter: "",
+            constraints
+          };
+
+          const response = await fetch("http://localhost:5000/api/optimize-attractions", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(requestBody)
+          });
+
+          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(data.error || "Optimization failed");
+          }
+
+          markerLayer.clearLayers();
+          routeLayer.clearLayers();
+
+          const selected = data.selected || [];
+          currentSelectedAttractions = selected;
+          if (data.transport_plan && Object.keys(data.transport_plan).length > 0) {
+            currentTransportPlan = data.transport_plan;
+            currentDayKeys = Object.keys(currentTransportPlan);
+            currentDayIndex = 0;
+            renderDayOnMap(currentDayKeys[0]);
+            renderQuickSummary();
+          } else {
+            currentTransportPlan = null;
+            currentDayKeys = [];
+            currentDayIndex = 0;
+            const mapDayLabel = document.getElementById("map_day_label");
+            if (mapDayLabel) {
+              mapDayLabel.textContent = "Day: -";
+            }
+            renderDaySummary("");
+            renderQuickSummary();
+
+            selected.forEach((attr, idx) => {
+              L.marker([attr.latitude, attr.longitude]).bindPopup(`
+                <strong>${idx + 1}. ${attr.title}</strong><br/>
+                City: ${attr.city || "N/A"}<br/>
+                Score: ${Number(attr.review_score || 0).toFixed(2)}<br/>
+                Price: ${attr.prices || 0} JPY<br/>
+                Categories: ${attr.all_categories || ""}
+              `).addTo(markerLayer);
+            });
+            await drawOptimizedRoute(selected);
+          }
+
+          // JSON preview removed intentionally.
+
+          if (!currentTransportPlan && selected.length > 0) {
+            const group = new L.featureGroup(markerLayer.getLayers());
+            map.fitBounds(group.getBounds().pad(0.1));
+          }
+        } catch (error) {
+          alert("Error: " + error.message);
+          updateRequestPreview();
+        }
+      });
+
+      loadData().catch(err => {
+        console.error(`Failed to load form options: ${err.message}`);
+      });
+      enforceNumericInputs();
+      updateObjectiveModeUI();
+    </script>
+  </body>
+</html>

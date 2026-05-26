@@ -1,0 +1,8 @@
+,title,review_score,prices,city,latitude,longitude,all_categories
+0,Tokyo Skytree,4.4,3100,Sumida,35.7100543,139.8107141,"['Observation deck', 'Tourist attraction']"
+1,Sensō-ji,4.5,0,Taito,35.7134032,139.7955265,"['Buddhist temple', 'Tourist attraction']"
+2,Imperial Palace East National Gardens,4.4,0,Chiyoda,35.6838467,139.7506859,"['National park', 'Garden', 'National reserve', 'Park', 'Tourist attraction']"
+3,Shibuya Sky,4.6,3400,Shibuya,35.6582857,139.7022617,"['Observation deck', 'Tourist attraction']"
+4,Tokyo Dome City,4.3,0,Bunkyo,35.7055706,139.7519705,"['Amusement center', 'Business park', 'Shopping mall', 'Tourist attraction']"
+5,Ueno Park,4.4,0,Taito,35.7152915,139.7738278,"['Park', 'State park']"
+6,Yebisu Brewery Tokyo,4.3,0,Shibuya,35.6469875,139.7086263,"['Tourist attraction', 'Bar', 'Heritage museum', 'Technology museum', 'Museum']"

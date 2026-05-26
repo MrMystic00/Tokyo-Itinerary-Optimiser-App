@@ -1,0 +1,16 @@
+,title,review_score,prices,r_i_norm,e_i_norm,city,latitude,longitude,all_categories,weighted_score
+0,Tokyo Skytree,4.4,3100,0.6428571428571429,0.6458333333333334,Sumida,35.7100543,139.8107141,"['Observation deck', 'Tourist attraction']",-0.38809523809523816
+1,Sensō-ji,4.5,0,0.7142857142857141,0.0,Taito,35.7134032,139.7955265,"['Buddhist temple', 'Tourist attraction']",0.14285714285714282
+2,Imperial Palace East National Gardens,4.4,0,0.6428571428571429,0.0,Chiyoda,35.6838467,139.7506859,"['National park', 'Garden', 'National reserve', 'Park', 'Tourist attraction']",0.1285714285714286
+3,Shibuya Sky,4.6,3400,0.7857142857142853,0.7083333333333334,Shibuya,35.6582857,139.7022617,"['Observation deck', 'Tourist attraction']",-0.40952380952380973
+4,Meiji Jingu,4.6,0,0.7857142857142853,0.0,Shibuya,35.6748417,139.6996266,"['Shinto shrine', 'Tourist attraction']",0.15714285714285706
+5,Tokyo Dome City,4.3,0,0.5714285714285712,0.0,Bunkyo,35.7055706,139.7519705,"['Amusement center', 'Business park', 'Shopping mall', 'Tourist attraction']",0.11428571428571424
+6,Tokyo Skytree Town,4.5,0,0.7142857142857141,0.0,Sumida,35.7100543,139.8107141,['Tourist attraction'],0.14285714285714282
+7,Cat Street,4.5,0,0.7142857142857141,0.0,Shibuya,35.6658625,139.7051482,['Tourist attraction'],0.14285714285714282
+8,Kawazu-Zakura next to Tokyo Skytree,4.5,0,0.7142857142857141,0.0,Sumida,35.7091454,139.8086838,['Tourist attraction'],0.14285714285714282
+9,Tokyo Station Marunouchi South Gate Dome,4.6,0,0.7857142857142853,0.0,Chiyoda,35.6812546,139.766706,['Tourist attraction'],0.15714285714285706
+10,Ueno Park,4.4,0,0.6428571428571429,0.0,Taito,35.7152915,139.7738278,"['Park', 'State park']",0.1285714285714286
+11,Marunouchi Tokyo Station Square,4.5,0,0.7142857142857141,0.0,Chiyoda,35.6812546,139.766706,"['Tourist attraction', 'Park']",0.14285714285714282
+12,Unicorn Gundam,4.6,0,0.7857142857142853,0.0,Koto,35.624438,139.7754905,"['Tourist attraction', 'Exhibit']",0.15714285714285706
+13,Yebisu Brewery Tokyo,4.3,0,0.5714285714285712,0.0,Shibuya,35.6469875,139.7086263,"['Tourist attraction', 'Bar', 'Heritage museum', 'Technology museum', 'Museum']",0.11428571428571424
+14,Ginza Central Street,4.5,0,0.7142857142857141,0.0,Chuo,35.6698189,139.7672583,['Tourist attraction'],0.14285714285714282

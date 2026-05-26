@@ -1,0 +1,673 @@
+{
+  "Day_1": [
+    {
+      "type": "location",
+      "name": "Tokyo Prince Hotel",
+      "lat": 35.6568,
+      "lon": 139.7459,
+      "categories": "Accommodation"
+    },
+    {
+      "type": "station",
+      "name": "赤羽橋",
+      "lat": 35.655007,
+      "lon": 139.743642,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "麻布十番",
+      "lat": 35.654682,
+      "lon": 139.737051,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "六本木",
+      "lat": 35.662836,
+      "lon": 139.731443,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "青山一丁目",
+      "lat": 35.672765,
+      "lon": 139.724159,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "国立競技場",
+      "lat": 35.679831,
+      "lon": 139.714932,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "代々木",
+      "lat": 35.683061,
+      "lon": 139.702042,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "新宿",
+      "lat": 35.689729,
+      "lon": 139.700464,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "新宿三丁目",
+      "lat": 35.690847,
+      "lon": 139.704895,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "新宿御苑前",
+      "lat": 35.688588,
+      "lon": 139.71069,
+      "categories": "NA"
+    },
+    {
+      "type": "location",
+      "name": "Shinjuku Gyoen National Garden",
+      "lat": 35.6850716,
+      "lon": 139.7095466,
+      "categories": "['Garden', 'Playground', 'State park', 'Tourist attraction']"
+    },
+    {
+      "type": "location",
+      "name": "Shinjuku Gyoen National Garden",
+      "lat": 35.6850716,
+      "lon": 139.7095466,
+      "categories": "['Garden', 'Playground', 'State park', 'Tourist attraction']"
+    },
+    {
+      "type": "station",
+      "name": "新宿御苑前",
+      "lat": 35.688588,
+      "lon": 139.71069,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "新宿三丁目",
+      "lat": 35.690847,
+      "lon": 139.704895,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "新宿",
+      "lat": 35.689729,
+      "lon": 139.700464,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "渋谷",
+      "lat": 35.658871,
+      "lon": 139.701238,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "渋谷",
+      "lat": 35.65802,
+      "lon": 139.702148,
+      "categories": "NA"
+    },
+    {
+      "type": "location",
+      "name": "Shibuya Sky",
+      "lat": 35.6582857,
+      "lon": 139.7022617,
+      "categories": "['Observation deck', 'Tourist attraction']"
+    },
+    {
+      "type": "location",
+      "name": "Shibuya Sky",
+      "lat": 35.6582857,
+      "lon": 139.7022617,
+      "categories": "['Observation deck', 'Tourist attraction']"
+    },
+    {
+      "type": "station",
+      "name": "渋谷",
+      "lat": 35.65802,
+      "lon": 139.702148,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "渋谷",
+      "lat": 35.658871,
+      "lon": 139.701238,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "恵比寿",
+      "lat": 35.646685,
+      "lon": 139.71007,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "恵比寿",
+      "lat": 35.647332,
+      "lon": 139.708988,
+      "categories": "NA"
+    },
+    {
+      "type": "location",
+      "name": "Yebisu Brewery Tokyo",
+      "lat": 35.6469875,
+      "lon": 139.7086263,
+      "categories": "['Tourist attraction', 'Bar', 'Heritage museum', 'Technology museum', 'Museum']"
+    },
+    {
+      "type": "location",
+      "name": "Yebisu Brewery Tokyo",
+      "lat": 35.6469875,
+      "lon": 139.7086263,
+      "categories": "['Tourist attraction', 'Bar', 'Heritage museum', 'Technology museum', 'Museum']"
+    },
+    {
+      "type": "station",
+      "name": "恵比寿",
+      "lat": 35.647332,
+      "lon": 139.708988,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "恵比寿",
+      "lat": 35.646685,
+      "lon": 139.71007,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "広尾",
+      "lat": 35.652279,
+      "lon": 139.722202,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "六本木",
+      "lat": 35.662836,
+      "lon": 139.731443,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "麻布十番",
+      "lat": 35.654682,
+      "lon": 139.737051,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "赤羽橋",
+      "lat": 35.655007,
+      "lon": 139.743642,
+      "categories": "NA"
+    },
+    {
+      "type": "location",
+      "name": "Tokyo Prince Hotel",
+      "lat": 35.6568,
+      "lon": 139.7459,
+      "categories": "Accommodation"
+    }
+  ],
+  "Day_2": [
+    {
+      "type": "location",
+      "name": "Tokyo Prince Hotel",
+      "lat": 35.6568,
+      "lon": 139.7459,
+      "categories": "Accommodation"
+    },
+    {
+      "type": "station",
+      "name": "赤羽橋",
+      "lat": 35.655007,
+      "lon": 139.743642,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "大門",
+      "lat": 35.656785,
+      "lon": 139.75466,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "新橋",
+      "lat": 35.666195,
+      "lon": 139.758587,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "銀座",
+      "lat": 35.671989,
+      "lon": 139.763965,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "銀座一丁目",
+      "lat": 35.67435,
+      "lon": 139.767045,
+      "categories": "NA"
+    },
+    {
+      "type": "location",
+      "name": "Japan's Top 100 Streets (Ginza 3-chome)",
+      "lat": 35.6724036,
+      "lon": 139.7667794,
+      "categories": "['Tourist attraction']"
+    },
+    {
+      "type": "location",
+      "name": "Japan's Top 100 Streets (Ginza 3-chome)",
+      "lat": 35.6724036,
+      "lon": 139.7667794,
+      "categories": "['Tourist attraction']"
+    },
+    {
+      "type": "station",
+      "name": "銀座一丁目",
+      "lat": 35.67435,
+      "lon": 139.767045,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "銀座",
+      "lat": 35.671989,
+      "lon": 139.763965,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "東銀座",
+      "lat": 35.669464,
+      "lon": 139.767253,
+      "categories": "NA"
+    },
+    {
+      "type": "location",
+      "name": "Ginza Central Street",
+      "lat": 35.6698189,
+      "lon": 139.7672583,
+      "categories": "['Tourist attraction']"
+    },
+    {
+      "type": "location",
+      "name": "Ginza Central Street",
+      "lat": 35.6698189,
+      "lon": 139.7672583,
+      "categories": "['Tourist attraction']"
+    },
+    {
+      "type": "station",
+      "name": "東銀座",
+      "lat": 35.669464,
+      "lon": 139.767253,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "新橋",
+      "lat": 35.666195,
+      "lon": 139.758587,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "浜松町",
+      "lat": 35.655391,
+      "lon": 139.757135,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "天王洲アイル",
+      "lat": 35.622908,
+      "lon": 139.750675,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "東京テレポート",
+      "lat": 35.62753,
+      "lon": 139.778896,
+      "categories": "NA"
+    },
+    {
+      "type": "location",
+      "name": "TOKYO Word Mark Monument",
+      "lat": 35.625316,
+      "lon": 139.7758804,
+      "categories": "['Tourist attraction']"
+    },
+    {
+      "type": "location",
+      "name": "TOKYO Word Mark Monument",
+      "lat": 35.625316,
+      "lon": 139.7758804,
+      "categories": "['Tourist attraction']"
+    },
+    {
+      "type": "station",
+      "name": "東京テレポート",
+      "lat": 35.62753,
+      "lon": 139.778896,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "天王洲アイル",
+      "lat": 35.622908,
+      "lon": 139.750675,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "浜松町",
+      "lat": 35.655391,
+      "lon": 139.757135,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "新橋",
+      "lat": 35.666195,
+      "lon": 139.758587,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "大門",
+      "lat": 35.656785,
+      "lon": 139.75466,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "赤羽橋",
+      "lat": 35.655007,
+      "lon": 139.743642,
+      "categories": "NA"
+    },
+    {
+      "type": "location",
+      "name": "Tokyo Prince Hotel",
+      "lat": 35.6568,
+      "lon": 139.7459,
+      "categories": "Accommodation"
+    }
+  ],
+  "Day_3": [
+    {
+      "type": "location",
+      "name": "Tokyo Prince Hotel",
+      "lat": 35.6568,
+      "lon": 139.7459,
+      "categories": "Accommodation"
+    },
+    {
+      "type": "station",
+      "name": "赤羽橋",
+      "lat": 35.655007,
+      "lon": 139.743642,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "麻布十番",
+      "lat": 35.654682,
+      "lon": 139.737051,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "六本木一丁目",
+      "lat": 35.665595,
+      "lon": 139.739,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "溜池山王",
+      "lat": 35.673621,
+      "lon": 139.741419,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "赤坂見附",
+      "lat": 35.677021,
+      "lon": 139.737047,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "四ツ谷",
+      "lat": 35.686041,
+      "lon": 139.730644,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "市ケ谷",
+      "lat": 35.691,
+      "lon": 139.735583,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "飯田橋",
+      "lat": 35.701835,
+      "lon": 139.745143,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "後楽園",
+      "lat": 35.707898,
+      "lon": 139.751864,
+      "categories": "NA"
+    },
+    {
+      "type": "location",
+      "name": "Tokyo Dome City",
+      "lat": 35.7055706,
+      "lon": 139.7519705,
+      "categories": "['Amusement center', 'Business park', 'Shopping mall', 'Tourist attraction']"
+    },
+    {
+      "type": "location",
+      "name": "Tokyo Dome City",
+      "lat": 35.7055706,
+      "lon": 139.7519705,
+      "categories": "['Amusement center', 'Business park', 'Shopping mall', 'Tourist attraction']"
+    },
+    {
+      "type": "station",
+      "name": "後楽園",
+      "lat": 35.707898,
+      "lon": 139.751864,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "本郷三丁目",
+      "lat": 35.706671,
+      "lon": 139.759914,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "御徒町",
+      "lat": 35.707282,
+      "lon": 139.774727,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "新御徒町",
+      "lat": 35.707045,
+      "lon": 139.781958,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "浅草",
+      "lat": 35.713817,
+      "lon": 139.792389,
+      "categories": "NA"
+    },
+    {
+      "type": "location",
+      "name": "Sensō-ji",
+      "lat": 35.7134032,
+      "lon": 139.7955265,
+      "categories": "['Buddhist temple', 'Tourist attraction']"
+    },
+    {
+      "type": "location",
+      "name": "Sensō-ji",
+      "lat": 35.7134032,
+      "lon": 139.7955265,
+      "categories": "['Buddhist temple', 'Tourist attraction']"
+    },
+    {
+      "type": "station",
+      "name": "浅草",
+      "lat": 35.713817,
+      "lon": 139.792389,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "浅草",
+      "lat": 35.711883,
+      "lon": 139.798214,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "とうきょうスカイツリー",
+      "lat": 35.71043,
+      "lon": 139.809332,
+      "categories": "NA"
+    },
+    {
+      "type": "location",
+      "name": "Kawazu-Zakura next to Tokyo Skytree",
+      "lat": 35.7091454,
+      "lon": 139.8086838,
+      "categories": "['Tourist attraction']"
+    },
+    {
+      "type": "location",
+      "name": "Kawazu-Zakura next to Tokyo Skytree",
+      "lat": 35.7091454,
+      "lon": 139.8086838,
+      "categories": "['Tourist attraction']"
+    },
+    {
+      "type": "station",
+      "name": "とうきょうスカイツリー",
+      "lat": 35.71043,
+      "lon": 139.809332,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "押上〈スカイツリー前〉",
+      "lat": 35.710702,
+      "lon": 139.812935,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "錦糸町",
+      "lat": 35.696802,
+      "lon": 139.814136,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "清澄白河",
+      "lat": 35.682105,
+      "lon": 139.798851,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "門前仲町",
+      "lat": 35.671851,
+      "lon": 139.796209,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "月島",
+      "lat": 35.664871,
+      "lon": 139.784233,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "勝どき",
+      "lat": 35.658507,
+      "lon": 139.776442,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "築地市場",
+      "lat": 35.664895,
+      "lon": 139.766915,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "汐留",
+      "lat": 35.663703,
+      "lon": 139.760642,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "大門",
+      "lat": 35.656785,
+      "lon": 139.75466,
+      "categories": "NA"
+    },
+    {
+      "type": "station",
+      "name": "赤羽橋",
+      "lat": 35.655007,
+      "lon": 139.743642,
+      "categories": "NA"
+    },
+    {
+      "type": "location",
+      "name": "Tokyo Prince Hotel",
+      "lat": 35.6568,
+      "lon": 139.7459,
+      "categories": "Accommodation"
+    }
+  ]
+}
