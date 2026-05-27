@@ -151,3 +151,5 @@ cd "backend"
 pip install -r requirements.txt
 python app.py
 ```
+
+🧐 3. Go back to the html and start exploring the constraints combination you are looking for!!
