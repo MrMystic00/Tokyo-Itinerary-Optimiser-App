@@ -31,13 +31,11 @@ The application recommends attractions based on budget, preferences, and constra
 
 ---
 
-# 📘 Project Overview
+## 📘 Project Overview
 
-Travelling around Tokyo can be overwhelming for first-time visitors due to its massive transport network and the large number of attractions available across the city. While tools such as Google Maps provide routing support, they do not optimise travel plans according to user-defined constraints such as budget, attraction preferences, or itinerary efficiency. :contentReference[oaicite:1]{index=1}
+Planning a trip around Tokyo can be challenging due to its extensive railway network and large number of attractions. Existing navigation tools can provide directions but do not optimise an itinerary based on a traveller's budget, preferences, or travel efficiency.
 
-This project aims to solve the following problem statement:
-
-> How can Tokyo travellers efficiently plan and customise their attraction itinerary and travel routes to optimise multiple objectives, including cost, time, and quality? :contentReference[oaicite:2]{index=2}
+This project combines **mathematical optimisation** and **route planning** to automatically generate personalised multi-day itineraries. Given user-defined constraints such as budget, attraction preferences, and trip duration, the system recommends attractions and computes efficient travel routes across Tokyo's metro network.
 
 The system consists of two major optimisation components:
 
@@ -77,7 +75,7 @@ Datasets and Code/LOP Python Code/data_cleaning.ipynb
 ```
 
 Final dataset size:
-- **63 cleaned attractions** after preprocessing :contentReference[oaicite:3]{index=3}
+- **63 cleaned attractions** after preprocessing
 
 ---
 
